@@ -2,7 +2,7 @@
 
 /**
  * This is the configuration template.
- * Fill in appropriate values for your server then rename it to Config.php.
+ * Fill in appropriate values for your server then rename it to "Config.php".
  */
 /**
  * The key.
