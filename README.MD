@@ -15,7 +15,7 @@ Please open an issue if there is something you want me to know.
 3. Create a database called `MemeEngine` and create the following table: 
 
 ```
-CREATE TABLE `memes` (
+CREATE TABLE `Memes` (
   `ID` char(32) DEFAULT NULL,
   `Keywords` mediumtext CHARACTER SET utf8,
   `isOffensive` tinyint(1) DEFAULT NULL
