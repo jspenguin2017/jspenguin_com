@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--<meta name="description" content="" />-->
+    <meta name="author" content="jspenguin2017" />
+    <!--<link rel="icon" href="" />-->
+    <title>MemeEngine Dashboard</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" charset="utf-8" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" charset="utf-8" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Menu -->
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Show Menu</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-header">
+                <a class="navbar-brand">Meme Engine</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><button type="button" class="btn btn-success navbar-btn btn-action" onclick="$('#modal-upload').modal('show');"><span class="glyphicon glyphicon-arrow-up"></span> Upload</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Main -->
+    <div class="jumbotron">
+        <div class="container">
+            <p>This service is delivered as-is, with absolutely no warranty.</p>
+            <p>Don't forget to put the key in Local Storage with key &quot;MemeEngineKey&quot;.</p>
+            <p id="p-status" style="font-weight:bold;">Loading...</p>
+        </div>
+    </div>
+    <!-- Search -->
+    <div class="jumbotron">
+        <div class="container">
+            <h2>Search</h2>
+            <div class="input-group">
+                <input id="input-search" type="text" class="form-control" placeholder="Enter keywords..." />
+                <span class="input-group-btn">
+                    <button id="btn-search" class="btn btn-secondary" type="button">Search</button>
+                </span>
+            </div>
+            <label>
+                <input id="input-allow-offensive" type="checkbox">
+                Include offensive
+            </label>
+            <div class="text-center" style="overflow-x:auto;">
+                <ul id="div-result-pagination" class="pagination pagination-lg"></ul>
+            </div>
+            <div id="div-result-container" style="overflow-x:auto;"></div>
+        </div>
+    </div>
+    <!-- Loading screen modal -->
+    <div id="modal-loading-screen" class="modal fade in" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" style="z-index:800000;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Loading...</h4>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                    <p>Please wait...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Upload modal -->
+    <div id="modal-upload" class="modal fade in" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" style="z-index:100000;">
+        <div id="modal-upload-document" class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="modal-upload-input-keywords" type="text" class="form-control" placeholder="Enter keywords..." />
+                    </div>
+                    <label>
+                        <input id="modal-upload-input-is-offensive" type="checkbox" />
+                        Offensive
+                    </label>
+                    <div id="modal-upload-preview-container" style="overflow:auto;">
+                        <canvas id="modal-upload-preview" style="display:none" width="100" height="100"></canvas>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Cancel</button>
+                    <button id="modal-upload-btn-upload" type="button" class="btn btn-success btn-lg" data-dismiss="modal">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- View/edit modal -->
+    <div id="modal-view" class="modal fade in" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" style="z-index:100000;">
+        <div id="modal-view-document" class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">View</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="modal-view-input-keywords" type="text" class="form-control" placeholder="Enter keywords..." />
+                    </div>
+                    <label>
+                        <input id="modal-view-input-is-offensive" type="checkbox" />
+                        Offensive
+                    </label>
+                    <div id="modal-view-unsynced">
+                        <p style="color:red;">Changes could not be saved.</p>
+                    </div>
+                    <div id="modal-view-image-container" style="overflow:auto;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-lg" data-dismiss="modal">Close and Discard Changes</button>
+                    <button id="modal-view-btn-delete" type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Delete</button>
+                    <button id="modal-view-btn-update" type="button" class="btn btn-warning btn-lg" data-dismiss="modal">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete confirm modal -->
+    <div id="modal-delete" class="modal fade in" tabindex="-1" role="dialog" style="z-index:200000;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-lg" data-dismiss="modal">No</button>
+                    <button id="modal-delete-btn-confirm" type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Load main script -->
+    <script src="index.js" charset="utf-8"></script>
+</body>
+</html>
