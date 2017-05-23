@@ -33,6 +33,11 @@ CREATE TABLE `Messages` (
   `Reference` text CHARACTER SET utf8,
   `Message` mediumtext CHARACTER SET utf8
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `LastAccess` (
+  `IP` varchar(1024) DEFAULT NULL,
+  `AccessTime` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
 ## To-do: 
