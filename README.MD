@@ -29,7 +29,7 @@ CREATE TABLE `Memes` (
 
 ```
 CREATE TABLE `Messages` (
-  `ID` int NOT NULL AUTO_INCREMENT,
+  `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `IP` varchar(512) DEFAULT NULL,
   `Reference` text CHARACTER SET utf8,
   `Message` mediumtext CHARACTER SET utf8,
