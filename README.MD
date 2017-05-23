@@ -22,6 +22,14 @@ CREATE TABLE `Memes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
+### PrivateMessage
+
+1. Create `Config.php` from `Config_Template.php`. 
+2. Create a database called `PrivateMessage` and create the following tables: 
+
+```
+```
+
 ## To-do: 
 
 1. Add home page, and pm (with pm setup instructions).
