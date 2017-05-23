@@ -29,17 +29,15 @@ CREATE TABLE `Memes` (
 
 ```
 CREATE TABLE `Messages` (
-  `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `IP` varchar(512) DEFAULT NULL,
   `Reference` text CHARACTER SET utf8,
-  `Message` mediumtext CHARACTER SET utf8,
-  PRIMARY KEY (`ID`)
+  `Message` mediumtext CHARACTER SET utf8
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `LastAccess` (
-  `IP` varchar(512) DEFAULT NULL,
-  `AccessTime` bigint(20) UNSIGNED DEFAULT NULL,
-  UNIQUE KEY (`IP`)
+  `IP` varchar(512) DEFAULT NULL UNIQUE KEY,
+  `AccessTime` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
