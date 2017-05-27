@@ -43,6 +43,5 @@ CREATE TABLE `LastAccess` (
 
 ## To-do: 
 
-1. Add home page, and pm (with pm setup instructions).
-2. Add sample full install instruction (for raspi). 
-3. Add sample auto backup script. 
+1. Add sample full install instruction (for raspi). 
+2. Add sample auto backup script. 
