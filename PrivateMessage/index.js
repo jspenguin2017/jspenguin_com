@@ -1,5 +1,11 @@
 "use strict";
 
+//=====Check HTTPS=====
+if (location.protocol !== "https:") {
+    location.href = "https:" + location.href.substring(location.protocol.length);
+    throw "Not HTTPS";
+}
+
 //=====Client=====
 /**
  * Hide wait screen and show a message.
