@@ -46,11 +46,29 @@ Ubuntu on Windows to connect to Raspberry Pi 3 via Secure Shell, the default pas
 
 ### Configure Raspbian Jessie Lite
 
-1. Run these commands over Secure Shell: 
+1. Run `sudo passwd pi` and enter a new password. 
+2. Run `sudo nano /etc/dhcpcd.conf` and add these to the end (put in the static IP you want, and put in the IP of your router): 
 
 ```
-sudo passwd pi
+interface wlan0
+static ip_address=192.168.1.150/24
+static routers=192.168.1.254
 ```
+
+3. Run `sudo reboot`. 
+4. Connect back to Raspberry Pi 3 like before (`ssh pi@192.168.1.150`), but using the new IP this time. 
+5. Run these commands: 
+
+```
+sudo apt update
+sudo apt upgrade
+sudo apt install procmail
+
+```
+
+### Installing server software
+
+
 
 ### MemeEngine
 
