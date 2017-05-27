@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--<meta name="description" content="" />-->
+    <meta name="author" content="jspenguin2017" />
+    <!--<link rel="icon" href="" />-->
+    <title>PrivateMessage</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" charset="utf-8" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" charset="utf-8" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Menu -->
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Show Menu</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-header">
+                <a class="navbar-brand">PrivateMessage</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><button type="button" class="btn btn-danger navbar-btn btn-action" id="btn-admin"><span class="glyphicon glyphicon-user"></span> Admin</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Main -->
+    <div class="jumbotron">
+        <div class="container">
+            <p>This service is delivered as-is, with absolutely no warranty.</p>
+            <p>A valid reference that I previously gave you is required. Your IP address will be logged.</p>
+            <p>One IP address can only send one message every 15 minutes.</p>
+            <div class="form-group">
+                <label for="div-main-input-reference">Reference:</label>
+                <input class="form-control" type="text" placeholder="" id="div-main-input-reference" />
+            </div>
+            <div class="form-group">
+                <label for="div-main-input-message">Message:</label>
+                <textarea class="form-control" style="resize:vertical;" rows="5" id="div-main-input-message"></textarea>
+            </div>
+            <button class="btn btn-primary btn-lg" id="div-main-btn-send">Send</button>
+        </div>
+    </div>
+    <!-- Admin panel -->
+    <div id="div-admin" class="jumbotron" style="display:none;">
+        <div class="container">
+            <p>Don't forget to put the administration key in Local Storage with key &quot;PrivateMessageAdminKey&quot;.</p>
+            <div class="text-center" style="overflow-x:auto;">
+                <ul id="div-admin-pagination" class="pagination pagination-lg"></ul>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Reference</th>
+                        <th>Message</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="div-admin-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Please wait screen modal -->
+    <div id="modal-wait-screen" class="modal fade in" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" style="z-index:800000;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Please wait...</h4>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                    <p>We are processing your request...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Message modal -->
+    <div id="modal-msg" class="modal fade in" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" style="z-index:800000;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="modal-msg-title" class="modal-title"></h4>
+                </div>
+                <div id="modal-msg-body" class="modal-body" style="white-space:pre-wrap;"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-lg" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="container theme-showcase">
+        <p style="color:gray; font-size:12px;">By jspenguin2017</p>
+    </div>
+    <!-- Load main script -->
+    <script src="index.js" charset="utf-8"></script>
+</body>
+</html>
