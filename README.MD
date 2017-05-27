@@ -24,7 +24,7 @@ apt update
 apt upgrade
 ```
 
-### Install and configure Raspbian Jessie Lite
+### Install Raspbian Jessie Lite
 
 1. Write Raspbian Jessie Lite onto an Micro SD card using Win32 Disk Imager. 
 2. Create an empty file called `ssh` to the boot partition of the image. 
@@ -40,7 +40,17 @@ network={
 }
 ```
 
-4. If your router blocks internal connections, forward port 22 of Raspberry Pi 3 to a random port that is larger than 1024. 
+4. If your router blocks internal connections, forward port 22 of Raspberry Pi 3 to a random port between 1024 and 65535. 
+5. Find the internal IP address of Raspberry Pi 3, then run `ssh pi@192.168.1.150` (replace the IP with yours) in Bash on 
+Ubuntu on Windows to connect to Raspberry Pi 3 via Secure Shell, the default password is `raspberry`. 
+
+### Configure Raspbian Jessie Lite
+
+1. Run these commands over Secure Shell: 
+
+```
+sudo passwd pi
+```
 
 ### MemeEngine
 
