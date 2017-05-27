@@ -47,7 +47,7 @@ switch (filter_input(INPUT_POST, "cmd", FILTER_UNSAFE_RAW)) {
             } else {
                 if ($query->rowCount() === 1) {
                     $row = ($query->fetch());
-                    if ($row["AccessTime"] + (15 * 60 / 60) < time()) { //Test only: 15s cooldown
+                    if ($row["AccessTime"] + (15 * 60) < time()) {
                         $rateOK = true;
                     }
                 } else {
