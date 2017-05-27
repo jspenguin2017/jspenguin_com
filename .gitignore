@@ -1,3 +1,5 @@
+# Ignore private data
+
 # MemeEngine
 MemeEngine/Config.php
 MemeEngine/MemeData/*
