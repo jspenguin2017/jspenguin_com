@@ -10,20 +10,37 @@ Please open an issue if there is something you want me to know.
 
 Here is a sample setup guide for Raspberry Pi 3 from a Windows 10 host, steps for other systems would be similar. 
 
-### Prepare server software
+### Prepare Windows 10 host
 
 1. Download [Raspbian Jessie Lite](https://www.raspberrypi.org/downloads/raspbian/). 
 2. Download and install [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/). 
-3. Write Raspbian Jessie Lite onto an Micro SD card using Win32 Disk Imager. 
-4. In `Control Panel -> Programs and Features -> Turn Windows features on or off`, check `Windows Subsystem for Linux`. 
-5. In `Settings -> Update & security -> For developers`, choose `Developer mode`. 
-6. Restart Windows 10, open Command Prompt, run `bash`, then complete installation. 
-7. Start Bash on Ubuntu on Windows, and execute these lines as root: 
+3. In `Control Panel -> Programs and Features -> Turn Windows features on or off`, check `Windows Subsystem for Linux`. 
+4. In `Settings -> Update & security -> For developers`, choose `Developer mode`. 
+5. Restart Windows 10, open Command Prompt, run `bash`, then complete installation. 
+6. Start Bash on Ubuntu on Windows, and execute these lines as root: 
 
 ```
 apt update
 apt upgrade
 ```
+
+### Install and configure Raspbian Jessie Lite
+
+1. Write Raspbian Jessie Lite onto an Micro SD card using Win32 Disk Imager. 
+2. Create an empty file called `ssh` to the boot partition of the image. 
+3. Create a file called `wpa_supplicant.conf` and enter the following data, fill in your private data as appropriate: 
+
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="YOUR WI-FI SSID"
+    psk="YOUR WI-FI PASSWORD"
+}
+```
+
+4. If your router blocks internal connections, forward port 22 of Raspberry Pi 3 to a random port that is larger than 1024. 
 
 ### MemeEngine
 
