@@ -14,6 +14,16 @@ Here is a sample setup guide for Raspberry Pi 3 from a Windows 10 host, steps fo
 
 1. Download [Raspbian Jessie Lite](https://www.raspberrypi.org/downloads/raspbian/). 
 2. Download and install [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/). 
+3. Write Raspbian Jessie Lite onto an Micro SD card using Win32 Disk Imager. 
+4. In `Control Panel -> Programs and Features -> Turn Windows features on or off`, check `Windows Subsystem for Linux`. 
+5. In `Settings -> Update & security -> For developers`, choose `Developer mode`. 
+6. Restart Windows 10, open Command Prompt, run `bash`, then complete installation. 
+7. Start Bash on Ubuntu on Windows, and execute these lines as root: 
+
+```
+apt update
+apt upgrade
+```
 
 ### MemeEngine
 
