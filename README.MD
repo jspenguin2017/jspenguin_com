@@ -8,6 +8,13 @@ Please open an issue if there is something you want me to know.
 
 ## Server setup: 
 
+Here is a sample setup guide for Raspberry Pi 3 from a Windows 10 host, steps for other systems would be similar. 
+
+### Prepare server software
+
+1. Download [Raspbian Jessie Lite](https://www.raspberrypi.org/downloads/raspbian/). 
+2. Download and install [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/). 
+
 ### MemeEngine
 
 1. Create `Config.php` from `Config_Template.php`. 
