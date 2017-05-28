@@ -12,18 +12,18 @@ Here is a sample setup guide for Raspberry Pi 3 from a Windows 10 host, steps fo
 
 ### Prepare Windows 10 host
 
-1. Download [Raspbian Jessie Lite](https://www.raspberrypi.org/downloads/raspbian/). 
+1. Download and extract [Raspbian Jessie Lite image](https://www.raspberrypi.org/downloads/raspbian/). 
 2. Download and install [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/). 
 3. In `Control Panel -> Programs and Features -> Turn Windows features on or off`, check `Windows Subsystem for Linux`. 
 4. In `Settings -> Update & security -> For developers`, choose `Developer mode`. 
 5. Restart Windows 10, open Command Prompt, run `bash`, then complete the installation of Bash on Ubuntu on Windows. 
-6. Start Bash on Ubuntu on Windows, then execute `apt update && apt upgrade` as root. 
+6. Start Bash on Ubuntu on Windows, then execute `sudo apt update && sudo apt upgrade`. 
 
 ### Install Raspbian Jessie Lite
 
 1. Write Raspbian Jessie Lite image onto a Micro SD card using Win32 Disk Imager. 
 2. Create an empty file called `ssh` to the boot partition of the image. 
-3. Create a file called `wpa_supplicant.conf` and enter the following data, fill in your private data as appropriate: 
+3. Create a file called `wpa_supplicant.conf` and paste the following lines, fill in your private data as appropriate: 
 
 ```
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
@@ -38,14 +38,14 @@ network={
 4. If your router blocks internal connections, forward port 22 of Raspberry Pi 3 to a random port between 1024 and 65535 
  that is not in use. 
 5. Find the internal IP address of Raspberry Pi 3 from your router configuration page. 
-6. Run `ssh pi@192.168.1.XXX` (put in the internal IP of Raspberry Pi 3) in Bash on Ubuntu on Windows to connect to 
+6. Run `ssh pi@192.168.1.XXX` (put in the internal IP of your Raspberry Pi 3) in Bash on Ubuntu on Windows to connect to 
  Raspberry Pi 3 via Secure Shell, the default password is `raspberry`. 
 
 ### Configure Raspbian Jessie Lite
 
 1. Run `passwd pi` to change your password. 
-2. Run `sudo nano /etc/dhcpcd.conf` and add these to the end (put in the static internal IP for your Raspberry Pi 3 and 
- the internal IP of your router, make sure the static internal IP is not in use): 
+2. Run `sudo nano /etc/dhcpcd.conf` and add these lines to the end (put in the static internal IP for your Raspberry Pi 3 
+ and the gateway IP, make sure the static internal IP is not in use): 
 
 ```
 interface wlan0
@@ -54,8 +54,10 @@ static routers=192.168.1.254
 ```
 
 3. Run `sudo reboot`. 
-4. Connect back to Raspberry Pi 3 like before (`ssh pi@192.168.1.150`), but using the new static IP this time. 
-5. Run these commands: 
+4. Update port forwarding, forward port 22 to a random port like before, but using the new static internal IP,
+ also forward port 80 to 80, and 443 to 443. 
+5. Connect back to Raspberry Pi 3 like before, but using the new static IP this time. 
+6. Run these commands: 
 
 ```
 sudo apt update
@@ -63,8 +65,8 @@ sudo apt upgrade
 sudo apt install procmail
 ```
 
-6. Update port forwarding, forward port 22 to a random port like before, but using the new static internal IP,
- also forward port 80 to 80, and 443 to 443. 
+7. Run `sudo raspi-config` and change these configurations: 
+  * 
 
 ### Installing server software
 
