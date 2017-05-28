@@ -65,14 +65,55 @@ sudo apt upgrade
 sudo apt install procmail
 ```
 
-7. Run `sudo raspi-config` and change these configurations: 
-  * 
+7. Run `sudo raspi-config` and change these configurations as appropriate (the timezone map only has big cities, 
+ choose the closest one): 
 
-### Installing server software
+```
+Localisation Options -> Change Locale: 
+  en_CA.UTF-8 UTF-8 -> en_CA.UTF-8
+Localisation Options -> Change Timezone: 
+  America -> Edmonton
+Localisation Options -> Change Wi-fi Country: 
+  CA Canada
+Advanced Options: 
+  Expand Filesystem
+```
 
+8. Run `sudo reboot`. 
 
+### Installing server software and configure server
 
-### MemeEngine
+1. Run these commands: 
+
+```
+sudo apt install apache2
+sudo apt install php5 libapache2-mod-php5
+sudo apt install mysql-server php5-mysql
+sudo service apache2 restart
+sudo systemctl disable apache2
+cd ~
+wget https://dl.eff.org/certbot-auto
+chmod 700 certbot-auto
+~/certbot-auto
+sudo ~/certbot-auto --apache
+```
+
+2. Copy all files in this repository to `/var/www/html` by any convenient method, then run these commands: 
+
+```
+sudo cp /var/www/html/wifi-cron.sh ~/wifi-cron.sh
+sudo chmod 555 ~/wifi-cron.sh
+```
+
+3. Run `sudo nano /etc/crontab` and add this line to the end: 
+
+```
+*/3 *   * * *   root    /home/pi/wifi-cron
+```
+
+4. Follow the following steps to configure each module: 
+
+##### MemeEngine
 
 1. Create `Config.php` from `Config_Template.php`. 
 2. Create a directory `MemeData`, make sure PHP can write into it. 
@@ -86,7 +127,7 @@ CREATE TABLE `Memes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
-### PrivateMessage
+##### PrivateMessage
 
 1. Create `Config.php` from `Config_Template.php`. 
 2. Create a database called `PrivateMessage` and create the following tables: 
