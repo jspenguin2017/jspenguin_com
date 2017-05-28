@@ -19,7 +19,7 @@ sleep 2s
 
 # Mount USB stick
 echo "Mounting USB stick..."
-mount /dev/sda1 /media/usb
+mount /dev/sda /media/usb
 
 # =====Backup Starts=====
 # Create new backup folder
