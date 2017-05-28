@@ -158,6 +158,8 @@ sudo chown -R www-data: /var/www/html
 2. To backup the server, plug in an USB drive (do not mount it), then run `sudo ~/backup-tool.sh`. 
 3. To restore the server from backup, copy files under `/media/usb/backup_.../html` to `/etc/www/html`, run `mysql -uroot-p`, 
  then execute `SOURCE /media/usb/backup_.../database.sql`. 
+4. To update the server, download and unpack all files in this repository to `/etc/www/html` by any convenient method, 
+ you may need to recreate those `Config.php` from their templates again. 
 
 ## To-do: 
 
