@@ -158,10 +158,7 @@ sudo chown -R www-data: /var/www/html
 2. To backup the server, plug in an USB drive (do not mount it), then run `sudo ~/backup-tool.sh`. 
 3. To restore the server from backup, copy files under `/media/usb/backup_.../html` to `/etc/www/html`, run `mysql -uroot-p`, 
  then execute `SOURCE /media/usb/backup_.../database.sql`. 
-4. To update the server, download and unpack all files in this repository over `/etc/www/html` by any convenient method, 
+4. To have a full backup of the server system, use Win32 Disk Imager to image the Micro SD card. 
+5. To restore the server from a full system backup, use Win32 Disk Imager to write the image back onto the Micro SD card. 
+6. To update the server, download and unpack all files in this repository over `/etc/www/html` by any convenient method, 
  you may need to recreate those `Config.php` from their templates again. 
-
-## To-do: 
-
-1. Add sample full install instruction (for raspi). 
-2. Add sample auto backup script. 
