@@ -2,8 +2,6 @@
 
 This is the server code for [https://jspenguin.com/](https://jspenguin.com/), without private data. 
 
-*Note: Server is not up currently*
-
 Please open an issue if there is something you want me to know. 
 
 ## Server setup: 
