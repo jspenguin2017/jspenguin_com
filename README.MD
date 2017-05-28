@@ -10,14 +10,14 @@ Please open an issue if there is something you want me to know.
 
 Here is a sample setup guide for Raspberry Pi 3 server from a Windows 10 device, steps for other systems would be similar. 
 
-### Prepare Windows 10 device
+### Prepare the Windows 10 device
 
 1. Download and extract [Raspbian Jessie Lite image](https://www.raspberrypi.org/downloads/raspbian/). 
 2. Download and install [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/). 
 3. In `Control Panel -> Programs and Features -> Turn Windows features on or off`, check `Windows Subsystem for Linux`. 
 4. In `Settings -> Update & security -> For developers`, choose `Developer mode`. 
 5. Restart Windows 10, open Command Prompt, run `bash`, then complete the installation of Bash on Ubuntu on Windows. 
-6. Start Bash on Ubuntu on Windows, then execute `sudo apt update && sudo apt upgrade`. 
+6. Start Bash on Ubuntu on Windows, then run `sudo apt update && sudo apt upgrade`. 
 
 ### Install Raspbian Jessie Lite
 
@@ -30,7 +30,7 @@ ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 
 network={
-    ssid="YOUR WI-FI SSID"
+    ssid="YOUR WI-FI NAME"
     psk="YOUR WI-FI PASSWORD"
 }
 ```
@@ -98,7 +98,10 @@ chmod 700 certbot-auto
 sudo ~/certbot-auto --apache
 ```
 
-2. Copy all files in this repository to `/var/www/html` by any convenient method, then run these commands: 
+2. Run `sudo nano /etc/apache2/apache2.conf`, find `<Directory /var/www/>` tag, change `Options Indexes FollowSymLinks` to
+ `Options FollowSymLinks`. 
+3. Run `sudo service apache2 restart`. 
+4. Copy all files in this repository to `/var/www/html` by any convenient method, then run these commands: 
 
 ```
 sudo cp /var/www/html/wifi-cron.sh ~/wifi-cron.sh
@@ -108,13 +111,13 @@ sudo chmod 555 ~/backup-tool.sh
 mkdir /media/usb
 ```
 
-3. Run `sudo nano /etc/crontab` and add this line to the end: 
+5. Run `sudo nano /etc/crontab` and add this line to the end: 
 
 ```
 */3 *   * * *   root    /home/pi/wifi-cron
 ```
 
-4. Run `mysql -uroot -p`, then run these queries: 
+6. Run `mysql -uroot -p`, then run these queries: 
 
 ```
 CREATE DATABASE `MemeEngine`;
@@ -139,18 +142,14 @@ CREATE TABLE `LastAccess` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
-5. Create `/etc/www/html/MemeEngine/Config.php` and `/etc/www/html/PrivateMessage/Config.php` from their template by any 
+7. Create `/etc/www/html/MemeEngine/Config.php` and `/etc/www/html/PrivateMessage/Config.php` from their template by any 
  convenient method. 
-6. Run these commands: 
+8. Run these commands: 
 
 ```
 sudo mkdir /etc/www/html/MemeEngine/MemeData
 sudo chown -R www-data: /var/www/html
 ```
-
-7. Run `sudo nano /etc/apache2/apache2.conf`, find `<Directory /var/www/>` tag, change `Options Indexes FollowSymLinks` to
- `Options FollowSymLinks`. 
-8. Run `sudo service apache2 restart`. 
 
 ## Server maintenance: 
 
