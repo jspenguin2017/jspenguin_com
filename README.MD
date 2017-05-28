@@ -154,7 +154,7 @@ sudo chown -R www-data: /var/www/html
 1. To start Apache web server after a reboot, run `sudo systemctl start apache2`. 
 2. To backup the server, plug in an USB drive (do not mount it), then run `sudo ~/backup-tool.sh`. 
 3. To restore the server from backup, run `cp -r /media/usb/backup_XXXXXXXXXX/html/* /etc/www/html/`, 
- run `mysql -uroot-p`, then run these queries (replace XXXXXXXXXX with appropriate timestamp): 
+ run `mysql -uroot -p`, then run these queries (replace XXXXXXXXXX with appropriate timestamp): 
 
 ```
 CREATE DATABASE `MemeEngine`;
