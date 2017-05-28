@@ -102,7 +102,10 @@ sudo ~/certbot-auto --apache
 
 ```
 sudo cp /var/www/html/wifi-cron.sh ~/wifi-cron.sh
+sudo cp /var/www/html/backup-tool.sh ~/backup-tool.sh
 sudo chmod 555 ~/wifi-cron.sh
+sudo chmod 555 ~/backup-tool.sh
+mkdir /media/usb
 ```
 
 3. Run `sudo nano /etc/crontab` and add this line to the end: 
@@ -111,40 +114,50 @@ sudo chmod 555 ~/wifi-cron.sh
 */3 *   * * *   root    /home/pi/wifi-cron
 ```
 
-4. Follow the following steps to configure each module: 
-
-##### MemeEngine
-
-1. Create `Config.php` from `Config_Template.php`. 
-2. Create a directory `MemeData`, make sure PHP can write into it. 
-3. Create a database called `MemeEngine` and create the following table: 
+4. Run `mysql -uroot -p`, then run these queries: 
 
 ```
+CREATE DATABASE `MemeEngine`;
+USE `MemeEngine`;
 CREATE TABLE `Memes` (
   `ID` char(32) DEFAULT NULL,
   `Keywords` mediumtext CHARACTER SET utf8,
   `isOffensive` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-```
 
-##### PrivateMessage
-
-1. Create `Config.php` from `Config_Template.php`. 
-2. Create a database called `PrivateMessage` and create the following tables: 
-
-```
+CREATE DATABASE `PrivateMessage`;
+USE `PrivateMessage`;
 CREATE TABLE `Messages` (
   `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `IP` varchar(512) DEFAULT NULL,
   `Reference` text CHARACTER SET utf8,
   `Message` mediumtext CHARACTER SET utf8
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 CREATE TABLE `LastAccess` (
   `IP` varchar(512) DEFAULT NULL UNIQUE KEY,
   `AccessTime` bigint(20) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
+
+5. Create `/etc/www/html/MemeEngine/Config.php` and `/etc/www/html/PrivateMessage/Config.php` from their template by any 
+ convenient method. 
+6. Run these commands: 
+
+```
+sudo mkdir /etc/www/html/MemeEngine/MemeData
+sudo chown -R www-data: /var/www/html
+```
+
+7. Run `sudo nano /etc/apache2/apache2.conf`, find `<Directory /var/www/>` tag, change `Options Indexes FollowSymLinks` to
+ `Options FollowSymLinks`. 
+8. Run `sudo service apache2 restart`. 
+
+## Server maintenance: 
+
+1. To start Apache web server after a reboot, run `sudo systemctl start apache2`. 
+2. To backup the server, plug in an USB drive (do not mount it), then run `sudo ~/backup-tool.sh`. 
+3. To restore the server from backup, copy files under `/media/usb/backup_.../html` to `/etc/www/html`, run `mysql -uroot-p`, 
+ then execute `SOURCE /media/usb/backup_.../database.sql`. 
 
 ## To-do: 
 
