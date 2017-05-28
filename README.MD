@@ -114,7 +114,7 @@ mkdir /media/usb
 5. Run `sudo nano /etc/crontab` and add this line to the end: 
 
 ```
-*/3 *   * * *   root    /home/pi/wifi-cron
+*/3 *   * * *   root    /home/pi/wifi-cron.sh
 ```
 
 6. Run `mysql -uroot -p`, then run these queries: 
