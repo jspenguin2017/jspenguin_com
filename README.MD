@@ -22,8 +22,8 @@ Here is a sample setup guide for Raspberry Pi 3 server from a Windows 10 device,
 ### Install Raspbian Jessie Lite
 
 1. Write Raspbian Jessie Lite image onto a Micro SD card using Win32 Disk Imager. 
-2. Create an empty file called `ssh` to the boot partition of the image. 
-3. Create a file called `wpa_supplicant.conf` and paste the following lines, fill in your private data as appropriate: 
+2. Create a file called `ssh` to the boot partition of the image, it can be empty. 
+3. Create another file called `wpa_supplicant.conf` and paste the following lines, fill in your private data as appropriate: 
 
 ```
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
@@ -56,17 +56,16 @@ static routers=192.168.1.254
 3. Run `sudo reboot`. 
 4. Update port forwarding, forward port 22 to a random port like before, but using the new static internal IP,
  also forward port 80 to 80, and 443 to 443. 
-5. Connect back to Raspberry Pi 3 like before, but using the new static IP this time. 
+5. Connect back to your Raspberry Pi 3 like before, but using the new static IP this time. 
 6. Run these commands: 
 
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install procmail
 ```
 
-7. Run `sudo raspi-config` and change these configurations as appropriate (the timezone map only has big cities, 
- choose the closest one): 
+7. Run `sudo raspi-config` and change these configurations as appropriate (for timezone, choose the closest city if 
+ you can't find yours): 
 
 ```
 Localisation Options -> Change Locale: 
@@ -83,7 +82,7 @@ Advanced Options:
 
 ### Installing server software and configure server
 
-1. Run these commands: 
+1. Connect back to your Raspberry Pi 3, then run these commands: 
 
 ```
 sudo apt install apache2
@@ -98,12 +97,13 @@ chmod 700 certbot-auto
 sudo ~/certbot-auto --apache
 ```
 
-2. Run `sudo nano /etc/apache2/apache2.conf`, find `<Directory /var/www/>` tag, change `Options Indexes FollowSymLinks` to
+2. Run `sudo nano /etc/apache2/apache2.conf`, find `<Directory /var/www/>` section, change `Options Indexes FollowSymLinks` to
  `Options FollowSymLinks`. 
 3. Run `sudo service apache2 restart`. 
 4. Copy all files in this repository to `/var/www/html` by any convenient method, then run these commands: 
 
 ```
+sudo apt install procmail
 sudo cp /var/www/html/wifi-cron.sh ~/wifi-cron.sh
 sudo cp /var/www/html/backup-tool.sh ~/backup-tool.sh
 sudo chmod 555 ~/wifi-cron.sh
@@ -155,17 +155,17 @@ sudo chown -R www-data: /var/www/html
 
 1. To start Apache web server after a reboot, run `sudo systemctl start apache2`. 
 2. To backup the server, plug in an USB drive (do not mount it), then run `sudo ~/backup-tool.sh`. 
-3. To restore the server from backup, copy files under `/media/usb/backup_.../html` to `/etc/www/html`, run `mysql -uroot-p`, 
- then run these queries: 
+3. To restore the server from backup, copy files under `/media/usb/backup_XXXXXXXXXX/html` to `/etc/www/html`, 
+ run `mysql -uroot-p`, then run these queries: 
 
 ```
 CREATE DATABASE `MemeEngine`;
 USE `MemeEngine`;
-SOURCE /media/usb/backup_.../MemeEngine-db.sql
+SOURCE /media/usb/backup_XXXXXXXXXX/MemeEngine-db.sql
 
 CREATE DATABASE `PrivateMessage`;
 USE `PrivateMessage`;
-SOURCE /media/usb/backup_.../PrivateMessage-db.sql
+SOURCE /media/usb/backup_XXXXXXXXXX/PrivateMessage-db.sql
 ```
 
 4. To have a full backup of the server system, use Win32 Disk Imager to image the Micro SD card. 
