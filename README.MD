@@ -160,7 +160,12 @@ sudo chown -R www-data: /var/www/html
  then run these queries: 
 
 ```
+CREATE DATABASE `MemeEngine`;
+USE `MemeEngine`;
 SOURCE /media/usb/backup_.../MemeEngine-db.sql
+
+CREATE DATABASE `PrivateMessage`;
+USE `PrivateMessage`;
 SOURCE /media/usb/backup_.../PrivateMessage-db.sql
 ```
 
