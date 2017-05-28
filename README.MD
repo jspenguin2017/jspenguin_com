@@ -22,7 +22,7 @@ Here is a sample setup guide for Raspberry Pi 3 server from a Windows 10 device,
 ### Install Raspbian Jessie Lite
 
 1. Write Raspbian Jessie Lite image onto a Micro SD card using Win32 Disk Imager. 
-2. Create a file called `ssh` to the boot partition of the image, it can be empty. 
+2. Create a file called `ssh` to the boot partition of the image, the content doesn't matter, it can be an empty file. 
 3. Create another file called `wpa_supplicant.conf` and paste the following lines, fill in your private data as appropriate: 
 
 ```
@@ -35,17 +35,17 @@ network={
 }
 ```
 
-4. If your router blocks internal connections, forward port 22 of Raspberry Pi 3 to a random port between 1024 and 65535 
+4. If your router blocks internal connections, forward port 22 of your Raspberry Pi 3 to a random port between 1024 and 65535 
  that is not in use. 
-5. Find the internal IP address of Raspberry Pi 3 from your router configuration page. 
-6. Run `ssh pi@192.168.1.XXX` (put in the internal IP of your Raspberry Pi 3) in Bash on Ubuntu on Windows to connect to 
+5. Find the internal IP address of your Raspberry Pi 3 from your router configuration page. 
+6. Run `ssh pi@192.168.1.XXX` (put in the internal IP of your Raspberry Pi 3) in Bash on Ubuntu on Windows to connect to your 
  Raspberry Pi 3 via Secure Shell, the default password is `raspberry`. 
 
 ### Configure Raspbian Jessie Lite
 
 1. Run `passwd pi` to change your password. 
 2. Run `sudo nano /etc/dhcpcd.conf` and add these lines to the end (put in the static internal IP for your Raspberry Pi 3 
- and the gateway IP, make sure the static internal IP is not in use): 
+ and the internal router IP, make sure the static internal IP is not in use): 
 
 ```
 interface wlan0
@@ -155,8 +155,8 @@ sudo chown -R www-data: /var/www/html
 
 1. To start Apache web server after a reboot, run `sudo systemctl start apache2`. 
 2. To backup the server, plug in an USB drive (do not mount it), then run `sudo ~/backup-tool.sh`. 
-3. To restore the server from backup, copy files under `/media/usb/backup_XXXXXXXXXX/html` to `/etc/www/html`, 
- run `mysql -uroot-p`, then run these queries: 
+3. To restore the server from backup, run `cp -r /media/usb/backup_XXXXXXXXXX/html/* /etc/www/html/`, 
+ run `mysql -uroot-p`, then run these queries (replace XXXXXXXXXX with appropriate timestamp): 
 
 ```
 CREATE DATABASE `MemeEngine`;
@@ -168,7 +168,7 @@ USE `PrivateMessage`;
 SOURCE /media/usb/backup_XXXXXXXXXX/PrivateMessage-db.sql
 ```
 
-4. To have a full backup of the server system, use Win32 Disk Imager to image the Micro SD card. 
-5. To restore the server from a full system backup, use Win32 Disk Imager to write the image back onto the Micro SD card. 
-6. To update the server, download and unpack all files in this repository over `/etc/www/html` by any convenient method, 
- you may need to recreate those `Config.php` from their templates again. 
+4. To create an image of the server system, use Win32 Disk Imager to image the Micro SD card. 
+5. To restore the server system from an image, use Win32 Disk Imager to write the image back onto the Micro SD card. 
+6. To update the server, download all files in this repository and paste them over `/etc/www/html` by any convenient method, 
+ you will need to recreate those `Config.php` from their templates again if the templates have changed. 
