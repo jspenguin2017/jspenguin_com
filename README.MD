@@ -175,4 +175,4 @@ SOURCE /media/usb/backup_XXXXXXXXXX/PrivateMessage-db.sql
 4. To create an image of the server system, use Win32 Disk Imager to image the Micro SD card. 
 5. To restore the server system from an image, use Win32 Disk Imager to write the image back onto the Micro SD card. 
 6. To update the server, download all files in this repository and paste them over `/etc/www/html` by any convenient method, 
- you will need to recreate those `Config.php` from their templates again if the templates have changed. 
+ you might need to change `Config.php`s or mySQL tables structure depending on the update. 
