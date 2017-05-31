@@ -182,6 +182,24 @@ $("#btn-admin").click(() => {
     //Load current page, the variable has default value of 0
     loadPage(currentPage);
 });
+//Clear timeout button click event
+$("#btn-clear-timeout").click(() => {
+    //Ask server to clear timeout
+    $("#modal-wait-screen").modal("show");
+    $.post("API.php", {
+        cmd: "admin clear timeout",
+        adminKey: adminKey,
+    }).done((data) => {
+        if (data === "ok") {
+            msg("Timeout Cleared", "Timeout for all users are cleared.");
+            viewRowElem.remove();
+        } else {
+            msg("Error", data);
+        }
+    }).fail(() => {
+        msg("Connection Error", "Please try again later.");
+    });
+});
 //Delete button click event
 $("#modal-view-btn-delete").click(() => {
     //Ask server to delete message
