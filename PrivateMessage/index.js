@@ -66,6 +66,12 @@ let activated = false;
  */
 let currentPage = 0;
 /**
+ * The ID and row element of the message that is being viewed.
+ * @var {integer}
+ * @var {TableRowElement}
+ */
+let viewID, viewRowElem;
+/**
  * Load a page of messages. There can be up to 20 messages per page.
  * @function
  * @param {integer} page - The page to load.
@@ -131,33 +137,19 @@ const loadPage = function (page) {
                         $("<td>").text(reference),
                         $("<td>").text(message),
                         $("<td>").append(
-                            $(`<button type="button" class="btn btn-primary div-admin-tbody-btn-view">&nbsp;View&nbsp;&nbsp;</button>`).data("index", i),
-                            $(`<button type="button" class="btn btn-danger div-admin-tbody-btn-delete">Delete</button>`).data("id", messages[i].id),
+                            $(`<button type="button" class="btn btn-primary div-admin-tbody-btn-view">&nbsp;View&nbsp;&nbsp;</button>`).data("index", i).data("id", messages[i].id),
                         ),
                     ).appendTo("#div-admin-tbody");
                 }
                 //Bind event handlers
                 $(".div-admin-tbody-btn-view").click(function () {
+                    //Update global variables
+                    viewID = $(this).data("id");
+                    viewRowElem = $(this).parent().parent();
+                    //Show message
                     const index = $(this).data("index");
-                    msg("View Message", `Reference: ${messages[index].reference}\n\nMessage: ${messages[index].message}`);
-                });
-                $(".div-admin-tbody-btn-delete").click(function () {
-                    //Ask server to delete message
-                    $("#modal-wait-screen").modal("show");
-                    $.post("API.php", {
-                        cmd: "admin delete",
-                        adminKey: adminKey,
-                        id: $(this).data("id"),
-                    }).done((data) => {
-                        if (data === "ok") {
-                            msg("Message Deleted", "The message is deleted.");
-                            $(this).parent().parent().remove(); //Keyword "this" is carried in by arrow function
-                        } else {
-                            msg("Error", data);
-                        }
-                    }).fail(() => {
-                        msg("Connection Error", "Please try again later.");
-                    });
+                    $("#modal-view-body").text(`Reference: ${messages[index].reference}\n\nMessage: ${messages[index].message}`);
+                    $("#modal-view").modal("show");
                 });
                 //Hide wait screen
                 $("#modal-wait-screen").modal("hide");
@@ -188,4 +180,23 @@ $("#btn-admin").click(() => {
     }
     //Load current page, the variable has default value of 0
     loadPage(currentPage);
+});
+//Delete button click event
+$("#modal-view-btn-delete").click(() => {
+    //Ask server to delete message
+    $("#modal-wait-screen").modal("show");
+    $.post("API.php", {
+        cmd: "admin delete",
+        adminKey: adminKey,
+        id: viewID,
+    }).done((data) => {
+        if (data === "ok") {
+            msg("Message Deleted", "The message is deleted.");
+            viewRowElem.remove();
+        } else {
+            msg("Error", data);
+        }
+    }).fail(() => {
+        msg("Connection Error", "Please try again later.");
+    });
 });
