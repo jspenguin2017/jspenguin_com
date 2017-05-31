@@ -97,8 +97,8 @@ sudo systemctl disable apache2
 cd ~
 wget https://dl.eff.org/certbot-auto
 chmod 700 certbot-auto
-~/certbot-auto
-sudo ~/certbot-auto --apache --no-bootstrap
+./certbot-auto
+sudo ./certbot-auto --apache --no-bootstrap
 ```
 
 2. Run `sudo nano /etc/apache2/apache2.conf`, find `<Directory /var/www/>` section, change `Options Indexes FollowSymLinks` to
