@@ -4,6 +4,12 @@ This is the server code for [https://jspenguin.com/](https://jspenguin.com/), wi
 
 Please open an issue if there is something you want me to know. 
 
+TODO: 
+
+1. Add redirect for uBlock Protector repository (?)
+2. Add clear throttle timeout
+3. Push to server
+
 ## Server setup: 
 
 Here is a sample setup guide for Raspberry Pi 3 server from a Windows 10 device, steps for other systems would be similar. 
