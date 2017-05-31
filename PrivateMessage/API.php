@@ -118,6 +118,20 @@ switch (filter_input(INPUT_POST, "cmd", FILTER_UNSAFE_RAW)) {
             echo "Administration key is not valid";
         }
         break;
+    case "admin clear timeout":
+        //Check administration key
+        if ($adminKey === filter_input(INPUT_POST, "adminKey", FILTER_UNSAFE_RAW)) {
+            //Truncate LastAccess table
+            $query = $db->prepare("TRUNCATE TABLE LastAccess;");
+            if ($query->execute()) {
+                echo "ok";
+            } else {
+                echo "Database error: Could not update LastAccess table.";
+            }
+        } else {
+            echo "Administration key is not valid";
+        }
+        break;
     case "admin delete":
         //Check administration key
         if ($adminKey === filter_input(INPUT_POST, "adminKey", FILTER_UNSAFE_RAW)) {
