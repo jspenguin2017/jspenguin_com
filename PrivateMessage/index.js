@@ -13,7 +13,7 @@ if (location.protocol !== "https:") {
  * @param {string} title - The title.
  * @param {string} msg - The message.
  */
-const msg = function (title, msg) {
+const msg = (title, msg) => {
     $("#modal-wait-screen").modal("hide");
     $("#modal-msg-title").text(title);
     $("#modal-msg-body").text(msg);
@@ -76,7 +76,7 @@ let viewID, viewRowElem;
  * @function
  * @param {integer} page - The page to load.
  */
-const loadPage = function (page) {
+const loadPage = (page) => {
     //Load messages count from server
     $("#modal-wait-screen").modal("show");
     $.post("API.php", {
@@ -175,6 +175,7 @@ $("#btn-admin").click(() => {
             $("<span>").addClass("glyphicon glyphicon-refresh"),
             " Refresh",
         ).removeClass("btn-danger").addClass("btn-info");
+        $("#btn-clear-timeout").show();
         //Flip the flag
         activated = true;
     }
