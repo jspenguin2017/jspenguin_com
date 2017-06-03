@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Redirect (URL shortening) for a community chat board.
+ * Redirect (URL shortening) for uBlock Protector.
  */
 //Write response code
 http_response_code(301);
