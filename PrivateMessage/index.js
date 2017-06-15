@@ -82,7 +82,6 @@ const loadPage = (page) => {
     $.post("API.php", {
         cmd: "admin count",
         adminKey: adminKey,
-        page: 0,
     }).done((data) => {
         const messageCount = parseInt(data);
         if (messageCount > -1 && !isNaN(messageCount) && isFinite(messageCount)) {
@@ -90,7 +89,7 @@ const loadPage = (page) => {
             $.post("API.php", {
                 cmd: "admin get page",
                 adminKey: adminKey,
-                page: 0,
+                page: page,
             }).done((data) => {
                 //===Redraw patination===
                 //Calculate total pages
