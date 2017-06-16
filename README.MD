@@ -55,13 +55,7 @@ static routers=192.168.1.254
 4. Update port forwarding, forward port 22 to a random port like before, but using the new static internal IP,
  also forward port 80 to 80, and 443 to 443. 
 5. Connect back to your Raspberry Pi 3 like before, but using the new static IP this time. 
-6. Run these commands: 
-
-```
-sudo apt update
-sudo apt upgrade
-```
-
+6. Run `sudo apt update && sudo apt upgrade`. 
 7. Run `sudo raspi-config` and change these configurations as appropriate (for timezone, choose the closest city if 
  you can't find yours): 
 
