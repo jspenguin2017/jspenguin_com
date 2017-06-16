@@ -11,15 +11,10 @@
  * @param string $ip - The IP address of the sender.
  * @param string $reference - The reference of the message.
  * @param boolean $message - The message.
- * @return Object - A formatted object.
+ * @return Array - A formatted array.
  */
 function formatter($id, $ip, $reference, $message) {
-    return [
-        "id" => $id,
-        "ip" => $ip,
-        "reference" => $reference,
-        "message" => $message
-    ];
+    return [$id, $ip, $reference, $message];
 }
 
 //Load configuration
@@ -149,7 +144,7 @@ switch (filter_input(INPUT_POST, "cmd", FILTER_UNSAFE_RAW)) {
                     if ($query->rowCount() === 1) {
                         echo "ok";
                     } else {
-                        echo "Database error: Messages table is corrupted.";
+                        echo "Database error: ID is not valid or Messages table is corrupted.";
                     }
                 } else {
                     echo "Database error: Could not update Messages table.";
