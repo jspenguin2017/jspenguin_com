@@ -21,10 +21,9 @@ const msg = (title, msg) => {
 };
 //Window resize event
 $(window).resize(() => {
-    $("#modal-msg-pre-body").css("max-height", $(window).height() - 240);
-});
-//Set size for the first time
-$(window).trigger("resize");
+    const height = $(window).height() - 240;
+    $("#modal-msg-pre-body").css("max-height", height < 100 ? 100 : height);
+}).trigger("resize");
 //Send button click event
 $("#div-main-btn-send").click(() => {
     //Show wait screen
@@ -72,6 +71,45 @@ let currentPage = 0;
  */
 let viewID, viewRowElem;
 /**
+ * Draw pagination.
+ * @function
+ * @param {integer} total - Total page count.
+ * @param {integer} [active=0] - The active page, starts with page 0.
+ */
+const paginate = (() => {
+    let currentTotal = -1;
+    let currentActive = -1;
+    return (total, active = 0) => {
+        //Check if I need to redraw pagination
+        if (total !== currentTotal) {
+            currentTotal = total;
+            currentActive = -1; //I need to set active again
+            //Redraw pagination
+            $("#div-admin-pagination").empty();
+            for (let i = 0; i < total; i++) {
+                //Create inner elements
+                const linkElem = $(`<a id="div-admin-pagination-${i}">`).text((i).toString()).addClass("div-admin-pagination-a").data("index", i);
+                const liElem = $("<li>").append(linkElem);
+                //Set active state
+                if (i === currentPage) {
+                    liElem.addClass("active");
+                }
+                //Put into container
+                $("#div-admin-pagination").append(liElem);
+            }
+            //Bind event handler
+            $(".div-admin-pagination-a").click(function () {
+                loadPage($(this).data("index"));
+            });
+        }
+        //Check if I need to update active page
+        if (active !== currentActive) {
+            currentActive = active;
+            $(`#div-admin-pagination-${active}`).parent().addClass("active").siblings().removeClass("active");
+        }
+    };
+})();
+/**
  * Load a page of messages. There can be up to 20 messages per page.
  * @function
  * @param {integer} page - The page to load.
@@ -91,29 +129,11 @@ const loadPage = (page) => {
                 adminKey: adminKey,
                 page: page,
             }).done((data) => {
-                //===Redraw patination===
+                //Update patination
                 //Calculate total pages
-                let pageCount = Math.ceil(messageCount / 20);
-                $("#div-admin-pagination").empty();
-                //Draw pagination
-                !pageCount && (pageCount++); //We will always draw page 0
-                for (let i = 0; i < pageCount; i++) {
-                    //Create inner elements
-                    const linkElem = $("<a>").text((i).toString()).addClass("div-admin-pagination-a").data("index", i);
-                    const liElem = $("<li>").append(linkElem);
-                    //Set active state
-                    if (i === currentPage) {
-                        liElem.addClass("active");
-                    }
-                    //Put into container
-                    $("#div-admin-pagination").append(liElem);
-                }
-                //Bind click event handler
-                $(".div-admin-pagination-a").click(function () {
-                    loadPage($(this).data("index"));
-                });
-                //===Draw page===
-                //Parse response
+                const pageCount = Math.ceil(messageCount / 20);
+                paginate(pageCount ? pageCount : 1);
+                //Update page
                 let messages;
                 try {
                     messages = JSON.parse(data);
@@ -124,19 +144,20 @@ const loadPage = (page) => {
                 }
                 //Draw page
                 $("#div-admin-tbody").empty();
+                //Messages have structure [ID, IP, reference, message]
                 for (let i = 0; i < messages.length; i++) {
                     //Process data
-                    let reference = messages[i].reference;
+                    let reference = messages[i][2];
                     (reference.length > 50) && (reference = reference.substr(0, 47) + "...");
-                    let message = messages[i].message;
+                    let message = messages[i][3];
                     (message.length > 150) && (message = message.substr(0, 147) + "...");
                     //Add to table
                     $("<tr>").append(
-                        $("<td>").text(messages[i].ip),
+                        $("<td>").text(messages[i][1]),
                         $("<td>").text(reference),
                         $("<td>").text(message),
                         $("<td>").append(
-                            $(`<button type="button" class="btn btn-primary div-admin-tbody-btn-view">&nbsp;View&nbsp;&nbsp;</button>`).data("index", i).data("id", messages[i].id),
+                            $(`<button type="button" class="btn btn-primary div-admin-tbody-btn-view">&nbsp;View&nbsp;&nbsp;</button>`).data("index", i).data("id", messages[i][0]),
                         ),
                     ).appendTo("#div-admin-tbody");
                 }
@@ -147,7 +168,7 @@ const loadPage = (page) => {
                     viewRowElem = $(this).parent().parent();
                     //Show message
                     const index = $(this).data("index");
-                    $("#modal-view-body").text(`Reference: ${messages[index].reference}\n\nMessage: ${messages[index].message}`);
+                    $("#modal-view-body").text(`Reference: ${messages[index][2]}\n\nMessage: ${messages[index][3]}`);
                     $("#modal-view").modal("show");
                 });
                 //Hide wait screen
@@ -191,7 +212,6 @@ $("#btn-clear-timeout").click(() => {
     }).done((data) => {
         if (data === "ok") {
             msg("Timeout Cleared", "Timeout for all users are cleared.");
-            viewRowElem.remove();
         } else {
             msg("Error", data);
         }
@@ -209,8 +229,8 @@ $("#modal-view-btn-delete").click(() => {
         id: viewID,
     }).done((data) => {
         if (data === "ok") {
-            msg("Message Deleted", "The message is deleted.");
             viewRowElem.remove();
+            msg("Message Deleted", "The message is deleted.");
         } else {
             msg("Error", data);
         }
