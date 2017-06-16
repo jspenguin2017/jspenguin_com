@@ -134,12 +134,12 @@ CREATE TABLE `LastAccess` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
-7. Create `/etc/www/html/MemeEngine/Config.php` and `/etc/www/html/PrivateMessage/Config.php` from their template by any 
+7. Create `/var/www/html/MemeEngine/Config.php` and `/var/www/html/PrivateMessage/Config.php` from their template by any 
  convenient method. 
 8. Run these commands: 
 
 ```
-sudo mkdir /etc/www/html/MemeEngine/MemeData
+sudo mkdir /var/www/html/MemeEngine/MemeData
 sudo chown -R www-data: /var/www/html
 ```
 
