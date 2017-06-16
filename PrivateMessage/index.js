@@ -3,7 +3,7 @@
 //=====Check HTTPS=====
 if (location.protocol !== "https:") {
     location.href = "https:" + location.href.substring(location.protocol.length);
-    throw "Not HTTPS";
+    throw new Error("Not HTTPS");
 }
 
 //=====Client=====
