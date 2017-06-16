@@ -147,7 +147,7 @@ sudo chown -R www-data: /var/www/html
 
 1. To start Apache web server after a reboot, run `sudo systemctl start apache2`. 
 2. To backup the server, plug in an USB drive (do not mount it), then run `sudo ~/backup-tool.sh`. 
-3. To restore the server from backup, run `cp -r /media/usb/backup_XXXXXXXXXX/html/* /etc/www/html/`, 
+3. To restore the server from backup, run `cp -r /media/usb/backup_XXXXXXXXXX/html/* /var/www/html/`, 
  run `mysql -uroot -p`, then run these queries (replace XXXXXXXXXX with appropriate timestamp): 
 
 ```
@@ -162,5 +162,5 @@ SOURCE /media/usb/backup_XXXXXXXXXX/PrivateMessage-db.sql
 
 4. To create an image of the server system, use Win32 Disk Imager to image the Micro SD card. 
 5. To restore the server system from an image, use Win32 Disk Imager to write the image back onto the Micro SD card. 
-6. To update the server, download all files in this repository and paste them over `/etc/www/html` by any convenient method, 
+6. To update the server, download all files in this repository and paste them over `/var/www/html` by any convenient method, 
  you may need to change configuration files (`Config.php`) or mySQL tables structure depending on the update. 
