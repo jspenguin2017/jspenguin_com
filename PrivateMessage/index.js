@@ -87,7 +87,8 @@ const paginate = (() => {
                 const linkElem = $(`<a>`).text((i).toString()).addClass("div-admin-pagination-a").data("index", i);
                 const liElem = $("<li>").append(linkElem);
                 //Set active state
-                if (i === 0) {
+                currentPage = Math.min(currentPage, total - 1);
+                if (i === currentPage) {
                     liElem.addClass("active");
                 }
                 //Put into container
@@ -98,9 +99,6 @@ const paginate = (() => {
                 $(this).parent().addClass("active").siblings().removeClass("active");
                 loadPage($(this).data("index"));
             });
-        } else {
-            //Only update active element
-            $(".div-admin-pagination-a").first().parent().addClass("active").siblings().removeClass("active");
         }
     };
 })();
