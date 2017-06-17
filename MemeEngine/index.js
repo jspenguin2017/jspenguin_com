@@ -279,9 +279,6 @@ $("#modal-upload-btn-upload").click(() => {
     }
     //Show loading screen
     loading();
-    //Read data from DOM
-    const keywords = normalize($("#modal-upload-input-keywords").val());
-    const isOffensive = $("#modal-upload-input-is-offensive").is(":checked");
     //Prepare and submit data
     const reader = new FileReader();
     reader.onload = function (e) {
@@ -290,8 +287,8 @@ $("#modal-upload-btn-upload").click(() => {
         formData.append("key", key);
         formData.append("cmd", "upload");
         formData.append("data", e.target.result);
-        formData.append("keywords", keywords);
-        formData.append("isOffensive", isOffensive);
+        formData.append("keywords", normalize($("#modal-upload-input-keywords").val()));
+        formData.append("isOffensive", $("#modal-upload-input-is-offensive").is(":checked"));
         //Upload content
         $.ajax({
             type: "POST",
@@ -362,7 +359,7 @@ $("#modal-delete-btn-confirm").unbind().click(() => {
     $.post("API.php", {
         "key": key,
         "cmd": "delete",
-        "id": memes[currentMeme].id,
+        "id": memes[currentMeme][0],
     }).done((data) => {
         //Check result and update screen
         if (data === "ok") {
@@ -388,15 +385,15 @@ $("#modal-view-btn-update").click(() => {
     $.post("API.php", {
         "key": key,
         "cmd": "update",
-        "id": memes[currentMeme].id,
-        "keywords": memes[currentMeme].keywords,
-        "isOffensive": memes[currentMeme].isOffensive,
+        "id": memes[currentMeme][0],
+        "keywords": memes[currentMeme][1],
+        "isOffensive": memes[currentMeme][2],
     }).done((data) => {
         //Check result and update screen and flag
         if (data === "ok") {
             status("Updated.");
             //Set unSynced flag back to false
-            memes[currentMeme].unSynced = false;
+            memes[currentMeme][3] = false;
         } else {
             status("Could not update meme, response is logged into the console.", true);
             console.log(data);
