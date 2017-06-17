@@ -103,22 +103,22 @@ const loadPage = (page) => {
             $("<img>").attr("src", `MemeData/${memes[i][0]}.png`).data("index", i).addClass("img-meme").hide(),
         );
     }
-    //Limit size when showing in container
-    $(".img-meme").on("load", (() => {
+    //On load and on error handler
+    (() => {
         //Initialize counters
-        let loaded = 0;
+        let loaded = 0, error = 0;
         const total = endIndex - startIndex;
         //Update status
-        status(`Loading memes of this page, 0/${total} done.`);
-        //Return closure function
-        return function () {
-            //Update status
-            loaded++;
-            if (loaded < total) {
-                status(`Loading memes of this page, ${loaded}/${total} done.`);
-            } else {
-                status(`Page ${currentPage} loaded, total ${memes.length} memes found.`);
-            }
+        const update = () => {
+            //Error are counted, and shown when everything is done
+            status(`Loading memes of this page, ${loaded + error}/${total} done.`);
+        };
+        const done = () => {
+            status(`Page ${currentPage} loaded, ${error} errors, total ${memes.length} memes found.`);
+        };
+        //Update status for the first time
+        update();
+        $(".img-meme").on("load", function () {
             //Set height depending on width to height ratio, the ratio of the image will be kept
             //The container will scroll hotizontally if a meme has very extreme ratio
             const ratio = $(this).width() / $(this).height();
@@ -131,8 +131,20 @@ const loadPage = (page) => {
             }
             //Show the image
             $(this).show();
-        }
-    })());
+            //Update status
+            if ((++loaded) + error === total) {
+                done();
+            } else {
+                update();
+            }
+        }).on("error", function () {
+            if (loaded + (++error) === total) {
+                done();
+            } else {
+                update();
+            }
+        });
+    })();
     //Bind click event handler
     $(".img-meme").click(function () {
         viewMeme($(this).data("index"));
@@ -366,7 +378,7 @@ $("#modal-delete-btn-confirm").unbind().click(() => {
             //Remove from array
             memes.splice(currentMeme, 1);
             //Redraw current page, this function will automatically flip to page before if that was the last meme on the page
-            drawPage(currentPage);
+            loadPage(currentPage);
             status("Deleted.");
         } else {
             status("Could not delete meme, response is logged into the console.", true);
