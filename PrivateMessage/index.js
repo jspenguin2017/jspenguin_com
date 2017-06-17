@@ -171,7 +171,7 @@ $("#btn-admin-refresh").click(() => {
         //Show admin panel
         $("#div-admin").show();
         //Update the button
-        $("#btn-admin").empty().append(
+        $("#btn-admin-refresh").empty().append(
             $("<span>").addClass("glyphicon glyphicon-refresh"),
             " Refresh",
         ).removeClass("btn-danger").addClass("btn-info");
