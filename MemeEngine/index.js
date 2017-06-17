@@ -162,10 +162,10 @@ const viewMeme = function (index) {
 const save = function () {
     //Check keywords
     let newKeywords = normalize($("#modal-view-input-keywords").val());
-    memes[currentMeme].keywords = ((newKeywords !== memes[currentMeme].keywords) && (memes[currentMeme].unSynced = true), newKeywords);
+    memes[currentMeme][1] = ((newKeywords !== memes[currentMeme][1]) && (memes[currentMeme][3] = true), newKeywords);
     //Check offensive flag
     let newFlag = $("#modal-view-input-is-offensive").is(":checked");
-    memes[currentMeme].isOffensive = ((newFlag !== memes[currentMeme].isOffensive) && (memes[currentMeme].unSynced = true), newFlag);
+    memes[currentMeme][2] = ((newFlag !== memes[currentMeme][2]) && (memes[currentMeme][3] = true), newFlag);
 };
 
 //=====Helper Functions=====
@@ -217,16 +217,14 @@ const status = (str, isError) => {
 //---Check HTTPS---
 if (location.protocol !== "https:") {
     location.href = "https:" + location.href.substring(location.protocol.length);
-    throw "Not HTTPS";
+    throw new Error("Not HTTPS");
 }
 //---Resize Handler---
 //Update size of some elements when the window is resized
 $(window).resize(() => {
-    $("#modal-upload-preview-container, #modal-view-image-container").css("max-height", $(window).height() - 320);
-    $("#modal-upload-document, #modal-view-document").css("min-width", $(window).width() - 100);
-});
-//Update size for the first time
-$(window).trigger("resize");
+    $("#modal-upload-preview-container, #modal-view-image-container").css("max-height", Math.max($(window).height() - 320, 100));
+    $("#modal-upload-document, #modal-view-document").css("min-width", Math.max($(window).width() - 100, 100));
+}).trigger("resize");
 //---Search Functionality---
 //Search button click
 $("#btn-search").click(() => {
@@ -234,28 +232,27 @@ $("#btn-search").click(() => {
     loading();
     //Abort current loading
     stop();
-    //Clear current results
-    memes = [];
-    drawPage(0);
-    //Read data from DOM
-    const keywords = normalize($("#input-search").val());
-    const includeOffensive = $("#input-allow-offensive").is(":checked");
-    //Uncheck checkbox
-    $("#input-allow-offensive").prop("checked", false);
     //Load memes
     $.post("API.php", {
         "key": key,
         "cmd": "search",
-        "keywords": keywords,
-        "includeOffensive": includeOffensive,
+        "keywords": normalize($("#input-search").val()),
+        "includeOffensive": $("#input-allow-offensive").is(":checked"),
     }).done((data) => {
         //Try to parse response
         try {
             memes = JSON.parse(data);
-            //Update status if there is no meme
-            !memes.length && status("No memes found.");
-            //Draw the first page
-            drawPage(0);
+            //Uncheck allow offensive checkbox
+            $("#input-allow-offensive").prop("checked", false);
+            //Update pagination
+            paginate(Math.max(Math.ceil(memes.length / 20), 1));
+            //Check if there are memes
+            if (memes.length) {
+                loadPage(0);
+            } else {
+                $("#div-result-container").empty();
+                status("No memes found.")
+            }
         } catch (err) {
             status("Could not parse memes array, response is logged into the console.", true);
             console.log(data);

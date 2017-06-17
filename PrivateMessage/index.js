@@ -21,8 +21,7 @@ const msg = (title, msg) => {
 };
 //Window resize event
 $(window).resize(() => {
-    const height = $(window).height() - 240;
-    $("#modal-msg-pre-body").css("max-height", height < 100 ? 100 : height);
+    $("#modal-msg-pre-body").css("max-height", Math.max($(window).height() - 240, 100));
 }).trigger("resize");
 //Send button click event
 $("#div-main-btn-send").click(() => {
@@ -166,7 +165,7 @@ const loadPage = (page) => {
     });
 };
 //Admin/Refresh button click event
-$("#btn-admin").click(() => {
+$("#btn-admin-refresh").click(() => {
     //First time click initialization
     if (!activated) {
         //Show admin panel
@@ -188,9 +187,8 @@ $("#btn-admin").click(() => {
     }).done((data) => {
         const messageCount = parseInt(data);
         if (!isNaN(messageCount) && isFinite(messageCount) && messageCount >= 0) {
-            //Count pages
-            const pageCount = Math.ceil(messageCount / 20);
-            paginate(pageCount ? pageCount : 1);
+            //Update pagination
+            paginate(Math.max(Math.ceil(messageCount / 20), 1));
             //Load active page
             loadPage(currentPage);
         } else {
