@@ -167,7 +167,7 @@ const normalize = (str) => {
     //Loop through the string and process it
     for (let i = 0; i < str.length; i++) {
         //Flip flag
-        (str[i] === "`") && (isBetweenQuotes = !isBetweenQuotes);
+        (str.charAt(i) === '`') && (isBetweenQuotes = !isBetweenQuotes);
         //Process
         newStr += (isBetweenQuotes ? str[i] : str[i].toLowerCase());
     }
