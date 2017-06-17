@@ -14,12 +14,16 @@ const key = localStorage.getItem("MemeEngineKey");
 const previewCanvas = document.getElementById("modal-upload-preview");
 const previewContext = previewCanvas.getContext("2d");
 /**
- * Memes array and the index of the meme that is shown in view/edit modal.
- * Each meme is an object with these properties: id, keywords, isOffensive.
- * @var {Array.<Object>}
+ * Search result.
+ * It is an array of arrays, each element has this structure: [id, keywords, isOffensive, unsynced].
+ * @var {Array.<Array>}
+ */
+let memes = [];
+/**
+ * The index of the meme that is shwon in view/edit modal.
  * @var {integer}
  */
-let memes = [], currentMeme = null;
+let currentMeme = null;
 /**
  * The current page, starts at 0. There can be 20 memes per page.
  * @var {integer}
@@ -33,37 +37,49 @@ let imgBlob = null;
 
 //=====Meme Controller=====
 /**
- * Redraw pagination, the container is expected to be empty.
+ * Draw pagination.
  * @function
+ * @param {integer} total - Total page count.
+ * @param {integer} [active=0] - The active page, starts with page 0.
  */
-const paginate = function () {
-    //Calculate total pages
-    const pageCount = Math.ceil(memes.length / 20);
-    //Draw pagination
-    for (let i = 0; i < pageCount; i++) {
-        //Create inner elements
-        const linkElem = $("<a>").text((i).toString()).addClass("div-result-pagination-a").data("index", i);
-        const liElem = $("<li>").append(linkElem);
-        //Set active state
-        if (i === currentPage) {
-            liElem.addClass("active");
+const paginate = (() => {
+    let currentTotal = -1;
+    return (total) => {
+        //Check if I need to redraw pagination
+        if (total !== currentTotal) {
+            currentTotal = total;
+            //Redraw pagination
+            $("#div-result-pagination").empty();
+            for (let i = 0; i < total; i++) {
+                //Create inner elements
+                const linkElem = $(`<a>`).text((i).toString()).addClass("div-result-pagination-a").data("index", i);
+                const liElem = $("<li>").append(linkElem);
+                //Set active state
+                if (i === 0) {
+                    liElem.addClass("active");
+                }
+                //Put into container
+                $("#div-result-pagination").append(liElem);
+            }
+            //Bind event handler
+            $(".div-result-pagination-a").click(function () {
+                $(this).parent().addClass("active").siblings().removeClass("active");
+                loadPage($(this).data("index"));
+            });
+        } else {
+            //Only update active element
+            $(".div-result-pagination-a").first().parent().addClass("active").siblings().removeClass("active");
         }
-        //Put into container
-        $("#div-result-pagination").append(liElem);
-    }
-    //Bind click event handler
-    $(".div-result-pagination-a").click(function () {
-        drawPage($(this).data("index"));
-    });
-};
+    };
+})();
 /**
- * Draw a page of memes.
+ * Load a page of memes.
  * @function
  * @param {integer} page - The page to draw.
  */
-const drawPage = function (page) {
+const loadPage = (page) => {
     //Clear containers
-    $("#div-result-container, #div-result-pagination").empty();
+    $("#div-result-container").empty();
     //Ignore if there is no meme
     if (!memes.length) {
         return;
@@ -78,18 +94,17 @@ const drawPage = function (page) {
     }
     //Save current page and redraw pagination
     currentPage = page;
-    paginate();
     //Get end index, since end index is excluded, it can be at most the length of memes array
     let endIndex = startIndex + 20;
     (endIndex > memes.length) && (endIndex = memes.length);
     //Draw each meme
     for (let i = startIndex; i < endIndex; i++) {
         $("#div-result-container").append(
-            $("<img>").attr("src", `MemeData/${memes[i].id}.png`).data("index", i).addClass("img-meme").hide()
+            $("<img>").attr("src", `MemeData/${memes[i][0]}.png`).data("index", i).addClass("img-meme").hide(),
         );
     }
     //Limit size when showing in container
-    $(".img-meme").on("load", (function () {
+    $(".img-meme").on("load", (() => {
         //Initialize counters
         let loaded = 0;
         const total = endIndex - startIndex;
@@ -130,10 +145,10 @@ const drawPage = function (page) {
  */
 const viewMeme = function (index) {
     //Prepare modal
-    $("#modal-view-input-keywords").val(memes[index].keywords);
-    $("#modal-view-input-is-offensive").prop("checked", memes[index].isOffensive);
-    memes[index].unSynced ? $("#modal-view-unsynced").show() : $("#modal-view-unsynced").hide();
-    $("#modal-view-image-container").html($("<img>").attr("src", `MemeData/${memes[index].id}.png`));
+    $("#modal-view-input-keywords").val(memes[index][1]);
+    $("#modal-view-input-is-offensive").prop("checked", memes[index][2]);
+    memes[index][3] ? $("#modal-view-unsynced").show() : $("#modal-view-unsynced").hide();
+    $("#modal-view-image-container").html($("<img>").attr("src", `MemeData/${memes[index][0]}.png`));
     //Update global variable so other event handler know which meme is active
     currentMeme = index;
     //Show modal

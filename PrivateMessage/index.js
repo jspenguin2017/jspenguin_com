@@ -74,24 +74,21 @@ let viewID, viewRowElem;
  * Draw pagination.
  * @function
  * @param {integer} total - Total page count.
- * @param {integer} [active=0] - The active page, starts with page 0.
  */
 const paginate = (() => {
     let currentTotal = -1;
-    let currentActive = -1;
-    return (total, active = 0) => {
+    return (total) => {
         //Check if I need to redraw pagination
         if (total !== currentTotal) {
             currentTotal = total;
-            currentActive = -1; //I need to set active again
             //Redraw pagination
             $("#div-admin-pagination").empty();
             for (let i = 0; i < total; i++) {
                 //Create inner elements
-                const linkElem = $(`<a id="div-admin-pagination-${i}">`).text((i).toString()).addClass("div-admin-pagination-a").data("index", i);
+                const linkElem = $(`<a>`).text((i).toString()).addClass("div-admin-pagination-a").data("index", i);
                 const liElem = $("<li>").append(linkElem);
                 //Set active state
-                if (i === currentPage) {
+                if (i === 0) {
                     liElem.addClass("active");
                 }
                 //Put into container
@@ -99,13 +96,12 @@ const paginate = (() => {
             }
             //Bind event handler
             $(".div-admin-pagination-a").click(function () {
+                $(this).parent().addClass("active").siblings().removeClass("active");
                 loadPage($(this).data("index"));
             });
-        }
-        //Check if I need to update active page
-        if (active !== currentActive) {
-            currentActive = active;
-            $(`#div-admin-pagination-${active}`).parent().addClass("active").siblings().removeClass("active");
+        } else {
+            //Only update active element
+            $(".div-admin-pagination-a").first().parent().addClass("active").siblings().removeClass("active");
         }
     };
 })();
@@ -118,73 +114,58 @@ const loadPage = (page) => {
     //Load messages count from server
     $("#modal-wait-screen").modal("show");
     $.post("API.php", {
-        cmd: "admin count",
+        cmd: "admin get page",
         adminKey: adminKey,
+        page: page,
     }).done((data) => {
-        const messageCount = parseInt(data);
-        if (messageCount > -1 && !isNaN(messageCount) && isFinite(messageCount)) {
-            //Received valid count, load messages
-            $.post("API.php", {
-                cmd: "admin get page",
-                adminKey: adminKey,
-                page: page,
-            }).done((data) => {
-                //Update patination
-                //Calculate total pages
-                const pageCount = Math.ceil(messageCount / 20);
-                paginate(pageCount ? pageCount : 1);
-                //Update page
-                let messages;
-                try {
-                    messages = JSON.parse(data);
-                } catch (err) {
-                    msg("Error", "Could not parse response. \n" + err.message);
-                    //Abort
-                    return;
-                }
-                //Draw page
-                $("#div-admin-tbody").empty();
-                //Messages have structure [ID, IP, reference, message]
-                for (let i = 0; i < messages.length; i++) {
-                    //Process data
-                    let reference = messages[i][2];
-                    (reference.length > 50) && (reference = reference.substr(0, 47) + "...");
-                    let message = messages[i][3];
-                    (message.length > 150) && (message = message.substr(0, 147) + "...");
-                    //Add to table
-                    $("<tr>").append(
-                        $("<td>").text(messages[i][1]),
-                        $("<td>").text(reference),
-                        $("<td>").text(message),
-                        $("<td>").append(
-                            $(`<button type="button" class="btn btn-primary div-admin-tbody-btn-view">&nbsp;View&nbsp;&nbsp;</button>`).data("index", i).data("id", messages[i][0]),
-                        ),
-                    ).appendTo("#div-admin-tbody");
-                }
-                //Bind event handlers
-                $(".div-admin-tbody-btn-view").click(function () {
-                    //Update global variables
-                    viewID = $(this).data("id");
-                    viewRowElem = $(this).parent().parent();
-                    //Show message
-                    const index = $(this).data("index");
-                    $("#modal-view-body").text(`Reference: ${messages[index][2]}\n\nMessage: ${messages[index][3]}`);
-                    $("#modal-view").modal("show");
-                });
-                //Hide wait screen
-                $("#modal-wait-screen").modal("hide");
-            }).fail(() => {
-                msg("Connection Error", "Please try again later.");
-            });
-        } else {
-            //Assume data to be an error message
-            msg("Error", data);
+        currentPage = page;
+        //Update page
+        let messages;
+        try {
+            messages = JSON.parse(data);
+        } catch (err) {
+            msg("Error", "Could not parse response. \n" + err.message);
+            //Abort
+            return;
         }
+        //Draw page
+        $("#div-admin-tbody").empty();
+        //messages is an array of arrays, each element has this structure: [ID, IP, reference, message]
+        for (let i = 0; i < messages.length; i++) {
+            //Process data
+            let reference = messages[i][2];
+            (reference.length > 50) && (reference = reference.substr(0, 47) + "...");
+            let message = messages[i][3];
+            (message.length > 150) && (message = message.substr(0, 147) + "...");
+            //Add to table
+            $("<tr>").append(
+                $("<td>").text(messages[i][1]),
+                $("<td>").text(reference),
+                $("<td>").text(message),
+                $("<td>").append(
+                    $(`<button type="button" class="btn btn-primary div-admin-tbody-btn-view">&nbsp;View&nbsp;&nbsp;</button>`)
+                        .data("index", i)
+                        .data("id", messages[i][0]),
+                ),
+            ).appendTo("#div-admin-tbody");
+        }
+        //Bind event handlers
+        $(".div-admin-tbody-btn-view").click(function () {
+            //Update global variables
+            viewID = $(this).data("id");
+            viewRowElem = $(this).parent().parent();
+            //Show message
+            const index = $(this).data("index");
+            $("#modal-view-body").text(`Reference: ${messages[index][2]}\n\nMessage: ${messages[index][3]}`);
+            $("#modal-view").modal("show");
+        });
+        //Hide wait screen
+        $("#modal-wait-screen").modal("hide");
     }).fail(() => {
         msg("Connection Error", "Please try again later.");
     });
 };
-//Admin button click event
+//Admin/Refresh button click event
 $("#btn-admin").click(() => {
     //First time click initialization
     if (!activated) {
@@ -199,8 +180,26 @@ $("#btn-admin").click(() => {
         //Flip the flag
         activated = true;
     }
-    //Load current page, the variable has default value of 0
-    loadPage(currentPage);
+    //Update page count
+    $("#modal-wait-screen").modal("show");
+    $.post("API.php", {
+        cmd: "admin count",
+        adminKey: adminKey,
+    }).done((data) => {
+        const messageCount = parseInt(data);
+        if (!isNaN(messageCount) && isFinite(messageCount) && messageCount >= 0) {
+            //Count pages
+            const pageCount = Math.ceil(messageCount / 20);
+            paginate(pageCount ? pageCount : 1);
+            //Load active page
+            loadPage(currentPage);
+        } else {
+            //Assume data to be an error message
+            msg("Error", data);
+        }
+    }).fail(() => {
+        msg("Connection Error", "Please try again later.");
+    });
 });
 //Clear timeout button click event
 $("#btn-clear-timeout").click(() => {

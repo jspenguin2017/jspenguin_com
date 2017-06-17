@@ -10,14 +10,10 @@
  * @param string $id - The ID of the meme.
  * @param string $keywords - The keywords of the meme.
  * @param boolean $isOffensive - The offensive flag of the meme.
- * @return Object - A formatted object.
+ * @return Array - A formatted array.
  */
 function formatter($id, $keywords, $isOffensive) {
-    return [
-        "id" => $id,
-        "keywords" => $keywords,
-        "isOffensive" => $isOffensive === "1" ? true : false
-    ];
+    return [$id, $keywords, $isOffensive === "1", false];
 }
 
 //Load configuration
