@@ -1,8 +1,8 @@
 # Ignore private data
 
 # MemeEngine
-MemeEngine/Config.php
-MemeEngine/MemeData/*
+/MemeEngine/Config.php
+/MemeEngine/MemeData/*
 
 # PrivateMessage
-PrivateMessage/Config.php
+/PrivateMessage/Config.php
