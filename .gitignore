@@ -6,3 +6,7 @@
 
 # PrivateMessage
 /PrivateMessage/Config.php
+
+# API
+/API/uBlockProtector/Config.php
+/API/uBlockProtector/Data.txt
