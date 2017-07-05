@@ -140,7 +140,7 @@ const loadPage = (page) => {
                 $("<td>").text(reference),
                 $("<td>").text(message),
                 $("<td>").append(
-                    $(`<button type="button" class="btn btn-primary div-admin-tbody-btn-view">&nbsp;View&nbsp;&nbsp;</button>`)
+                    $(`<button type="button" class="btn btn-primary div-admin-tbody-btn-view">View</button>`)
                         .data("index", i)
                         .data("id", messages[i][0]),
                 ),
