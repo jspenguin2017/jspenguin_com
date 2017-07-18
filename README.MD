@@ -4,7 +4,7 @@ This is the server code for [https://jspenguin.com/](https://jspenguin.com/), wi
 
 Please open an issue if there is something you want me to know. 
 
-## Server setup: 
+## Server Setup
 
 Here is a sample setup guide for Raspberry Pi 3 server from a Windows 10 device, steps for other systems would be similar. 
 
@@ -142,7 +142,7 @@ sudo mkdir /var/www/html/MemeEngine/MemeData
 sudo chown -R www-data: /var/www/html
 ```
 
-## Server maintenance: 
+### Server maintenance
 
 1. To start Apache web server after a reboot, run `sudo systemctl start apache2`. 
 2. To backup the server, plug in an USB drive (do not mount it), run `sudo ~/backup-tool.sh`, then follow instructions. 
