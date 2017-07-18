@@ -33,8 +33,7 @@ network={
 }
 ```
 
-4. If your router blocks internal connections, forward port 22 of your Raspberry Pi 3 to a random port between 1024 and 65535 
- that is not in use. 
+4. Update your router firewall settings if needed. Port 22, 80, and 443 needs to be whitelisted. 
 5. Find the internal IP address of your Raspberry Pi 3 from your router configuration page. 
 6. Run `ssh pi@192.168.1.XXX` (put in the internal IP of your Raspberry Pi 3) in Bash on Ubuntu on Windows to connect to your 
  Raspberry Pi 3 via Secure Shell, the default password is `raspberry`. 
