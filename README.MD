@@ -33,15 +33,15 @@ network={
 }
 ```
 
-4. Update your router firewall settings if needed. Port 22, 80, and 443 needs to be whitelisted. 
-5. Find the internal IP address of your Raspberry Pi 3 from your router configuration page. 
+4. Update your router firewall settings if needed. Port 22, 80, and 443 need to be white listed. 
+5. Find the internal IP address of your Raspberry Pi 3 from your router status page. 
 6. Run `ssh pi@192.168.1.XXX` (put in the internal IP of your Raspberry Pi 3) in Bash on Ubuntu on Windows to connect to your 
  Raspberry Pi 3 via Secure Shell, the default password is `raspberry`. 
 
 ### Configure Raspbian Jessie Lite
 
 1. Run `passwd pi` to change your password. 
-2. Run `sudo nano /etc/dhcpcd.conf` and add these lines to the end (put in the static internal IP for your Raspberry Pi 3 
+2. Run `sudo nano /etc/dhcpcd.conf` and add these lines to the end (put in a static internal IP for your Raspberry Pi 3 
  and the internal router IP, make sure the static internal IP is not in use): 
 
 ```
@@ -51,8 +51,8 @@ static routers=192.168.1.254
 ```
 
 3. Run `sudo reboot`. 
-4. Update port forwarding, forward port 22 to a random port like before, but using the new static internal IP,
- also forward port 80 to 80, and 443 to 443. 
+4. Go into your router control pannel, and add new port forwardings, forward port 22 to a random port between 1024 and 65535, 
+ then forward port 80 to 80, and 443 to 443. 
 5. Connect back to your Raspberry Pi 3 like before, but using the new static IP this time. 
 6. Run `sudo apt update && sudo apt upgrade`. 
 7. Run `sudo raspi-config` and change these configurations as appropriate (for timezone, choose the closest city if 
@@ -108,7 +108,7 @@ mkdir /media/usb
 */3 *   * * *   root    /home/pi/wifi-cron.sh
 ```
 
-6. Run `mysql -uroot -p`, then run these queries: 
+6. Run `mysql -uroot -p`, log in, then run these queries: 
 
 ```
 CREATE DATABASE `MemeEngine`;
