@@ -172,4 +172,4 @@ SOURCE /media/usb/backup_XXXXXXXXXX/PrivateMessage-db.sql
     * `exit` in a screen session to end the session. 
     * `screen -ls` to list all sessions. 
     * `screen -r` to reconnect to last session. 
-    * `screen -r <ID>` to reconnect to a specific session. 
+    * `screen -r <ID>` to reconnect to a specific session. Use `screen -ls` to find out what is the session ID. 
