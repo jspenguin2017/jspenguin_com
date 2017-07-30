@@ -71,7 +71,7 @@ Advanced Options:
 
 8. Run `sudo reboot`. 
 
-### Installing server software and configure server
+### Install server software and configure server
 
 1. Connect back to your Raspberry Pi 3, then run these commands: 
 
@@ -163,3 +163,11 @@ SOURCE /media/usb/backup_XXXXXXXXXX/PrivateMessage-db.sql
 5. To restore the server system from an image, use Win32 Disk Imager to write the image back onto the Micro SD card. 
 6. To update the server, download all files in this repository and paste them over `/var/www/html` by any convenient method, 
  you may need to change configuration files (`Config.php`) or mySQL tables structure depending on the update. 
+
+### Use GNU Screen to prevent damage from accidental Secure Shell disconnection
+
+1. Run `sudo apt install screen`. 
+2.1. Run `screen` to start a session. 
+2.2. Run `exit` in a screen session to end the session. 
+2.3. Run `screen -ls` to list all sessions. 
+2.4. Run `screen -r` to reconnect to last session, or `screen -r <ID>` to reconnect to a specific session. 
