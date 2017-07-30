@@ -167,7 +167,7 @@ SOURCE /media/usb/backup_XXXXXXXXXX/PrivateMessage-db.sql
 ### Use GNU Screen to prevent damage from accidental Secure Shell disconnection
 
 1. Run `sudo apt install screen`. 
-2. Available commands: 
+2. Common commands: 
     * `screen` to start a session. 
     * `exit` in a screen session to end the session. 
     * `screen -ls` to list all sessions. 
