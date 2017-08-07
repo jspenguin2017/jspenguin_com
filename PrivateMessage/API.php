@@ -33,8 +33,15 @@ switch (filter_input(INPUT_POST, "cmd", FILTER_UNSAFE_RAW)) {
     case "send":
         //Check origin
         $origin = filter_input(INPUT_SERVER, "HTTP_ORIGIN", FILTER_UNSAFE_RAW);
-        if ($origin !== "https://jspenguin.com" && $origin !== "https://jspenguin.flu.cc" && $origin !== "https://192.168.1.150") {
-            //Say nothing and just ignore the request
+        $safe = false;
+        foreach ($domains as $domain) {
+            if ($origin === $domain) {
+                $safe = true;
+                break;
+            }
+        }
+        if (!$safe) {
+            echo "Request error: This origin is not allowed.";
             exit;
         }
         //Check rate limit
