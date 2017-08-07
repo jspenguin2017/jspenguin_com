@@ -15,6 +15,7 @@ if (location.protocol !== "https:") {
  */
 const msg = (title, msg) => {
     $("#modal-wait-screen").modal("hide");
+    $("body").css("padding-right", "0px");
     $("#modal-msg-title").text(title);
     $("#modal-msg-body").text(msg);
     $("#modal-msg").modal("show");
