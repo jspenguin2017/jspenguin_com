@@ -135,7 +135,9 @@ CREATE TABLE `LastAccess` (
 
 7. Create `/var/www/html/MemeEngine/Config.php` and `/var/www/html/PrivateMessage/Config.php` from their template by any 
  convenient method. 
-8. Run these commands: 
+8. Put your domains into cross site form forgery blocker. 
+ Look for `$origin = filter_input(INPUT_SERVER, "HTTP_ORIGIN", FILTER_UNSAFE_RAW);` in PHP code. 
+9. Run these commands: 
 
 ```
 sudo mkdir /var/www/html/MemeEngine/MemeData
