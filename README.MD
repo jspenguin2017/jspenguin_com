@@ -164,7 +164,7 @@ SOURCE /media/usb/backup_XXXXXXXXXX/PrivateMessage-db.sql
 6. To update the server, download all files in this repository and paste them over `/var/www/html` by any convenient method, 
  you may need to change configuration files (`Config.php`) or mySQL tables structure depending on the update. 
 
-### Use GNU Screen to prevent damage from accidental Secure Shell disconnection
+### Using GNU Screen to prevent damage from accidental Secure Shell disconnection
 
 1. Run `sudo apt install screen`. 
 2. Common commands: 
