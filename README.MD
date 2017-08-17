@@ -1,6 +1,8 @@
 # jspenguin.com
 
-This is the server code for [https://jspenguin.com/](https://jspenguin.com/), without private data. 
+This is the old server code for [https://jspenguin.com/](https://jspenguin.com/), without private data. 
+
+The new server code is proprietary. 
 
 Please open an issue if there is something you want me to know. 
 
