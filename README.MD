@@ -6,6 +6,8 @@ The new server code is proprietary.
 
 Please open an issue if there is something you want me to know. 
 
+*Note:* I noticed that this server code is vulnerable to timing attack, I will not fix it as it is no longer in use. My new server code is not vulnerable. 
+
 ## Server Setup
 
 Here is a sample setup guide for Raspberry Pi 3 server from a Windows 10 device, steps for other systems would be similar. 
