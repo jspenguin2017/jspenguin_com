@@ -1,12 +1,14 @@
 # jspenguin.com
 
-This is the old server code for [https://jspenguin.com/](https://jspenguin.com/), without private data. 
+This is the old server code for `https://jspenguin.com/`, without private data. 
 
 The new server code is proprietary. 
 
 Please open an issue if there is something you want me to know. 
 
-*Note:* I noticed that this server code is vulnerable to timing attack, I will not fix it as it is no longer in use. My new server code is not vulnerable. 
+*Note 1*: I noticed that this server code is vulnerable to timing attack, I will not fix it as it is no longer in use. My new server code is not vulnerable. 
+
+*Note 2*: I no longer control `jspenguin.com` domain. 
 
 ## Server Setup
 
